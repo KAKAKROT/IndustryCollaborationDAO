@@ -1,0 +1,23 @@
+module send_message::helloworld{
+    use std::string::{String};
+    use std::signer;
+    //1. structs
+    struct Message has key{
+        my_message: String 
+    }
+    //2. functions
+    public entry fun create_message(account:&signer,msg:String) acquires Message{
+        let account_address=signer::address_of(account);
+        if(!exists<Message>(account_address)){
+            let message=Message{
+                my_message:msg
+            };
+            move_to(account,message);
+        }else{
+            let message=borrow_global_mut<Message>(account_address);
+            message.my_message=msg;
+        }}
+
+    //3. tests
+
+}
